@@ -1,1 +1,4 @@
-
+wavfile
+numpy
+pydub
+ffmpeg
