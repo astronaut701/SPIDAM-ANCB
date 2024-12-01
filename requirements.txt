@@ -2,3 +2,5 @@ wavfile
 numpy
 pydub
 ffmpeg
+tkinter
+matplotlib
