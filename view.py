@@ -36,3 +36,20 @@ class AudioView:
         self.root.protocol("WM_DELETE_WINDOW", self.exitRun)
         # Create the button used to load files as was setup in the controller (see __init__)
         self.LoadButton.pack(pady=10)
+
+    # Sets up user message prompts in a safer way
+    def messages(self, type, title, message, icon):
+        # Create the two types of message boxes used for user prompts
+        types = {
+            1: messagebox.askokcancel,
+            2: messagebox.askyesno,
+        }
+
+        # If either of the types are called, then we can setup a message and return it
+        if type in types:
+            r = types[type](
+                title=title,
+                message=message,
+                icon=icon,
+            )
+            return r
