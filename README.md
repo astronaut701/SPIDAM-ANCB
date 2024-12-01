@@ -2,4 +2,4 @@
 
 foo (add something here later)
 
-By Christopher Broche, Austin Anderson
+By Christopher Broche, Austin Norman
