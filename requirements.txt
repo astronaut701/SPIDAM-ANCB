@@ -1,4 +1,4 @@
-wavfile
+scipy
 numpy
 pydub
 ffmpeg
