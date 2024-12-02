@@ -30,3 +30,50 @@ class AudioController:
                 else:
                     # If we're all set with that, read the file (and do something else)
                     self.model.readWav()
+                    self.view.displayWaveform(self.model)
+            else:
+                # Read the file
+                self.model.readWav()
+                # Display waveform
+                self.view.displayWaveform(self.model)
+                # Generate the figure for low, mid, high frequencies
+                self.view.genRT60figure(0)
+                self.view.genRT60figure(1)
+                self.view.genRT60figure(2)
+                # Generate the combined figure
+                self.view.combinedFigure()
+                # Generate the figure for amplitude vs frequency
+                self.view.amplitudeVsFreq()
+
+    def Waveform(self):
+        self.view.drawNextCanvas(0)
+
+    def combineFigures(self):
+        self.view.drawNextCanvas(4)
+
+    def amplitudeVsFrequencyPlot(self):
+        self.view.drawNextCanvas(5)
+
+    # Button that swaps between the figures
+    def nextPlot(self):
+        # 0 -> Amplitude Figure
+        # 1 -> Low RT60
+        # 2 -> Mid RT60
+        # 3 -> High RT60
+        self.graphNum += 1
+        if self.graphNum == 4:
+            self.graphNum = 1
+        if self.graphNum == 1:
+            self.view.SwapRTGraph.config(text="Mid")
+        elif self.graphNum == 2:
+            self.view.SwapRTGraph.config(text="High")
+        elif self.graphNum == 3:
+            self.view.SwapRTGraph.config(text="Low")
+
+        self.view.drawNextCanvas(self.graphNum)
+
+if __name__ == "__main__":
+    import tkinter as tk
+    root = tk.Tk()
+    controller = AudioController(root)
+    root.mainloop()
