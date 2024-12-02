@@ -1,5 +1,7 @@
 # SPIDAM (Scientific Python Interactive Data Acoustic Modeling) COP2080 Final Project
 
+By Christopher Broche, Austin Norman
+
 ## description
 foo (add something here later)
 takes an audio file and converts it to wav.
@@ -30,5 +32,3 @@ won't take any file other than mp3 and wav files
 
 ## known issues
 the converted WAV file created from loading an MP3 is left behind and never cleaned up
-
-By Christopher Broche, Austin Norman
