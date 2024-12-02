@@ -73,3 +73,27 @@ class AudioModel:
         target = np.asarray(target)
         index = (np.abs(target-nearest)).argmin()
         return target[index]
+        
+    def rt60compute(self, type):
+        # Get the index of max dB value
+        self.maxvaluepos.append(np.argmax(self.dBdata[type]))
+        # Go from the max down to each frequency
+        stepped_array = self.dBdata[type][self.maxvaluepos[-1]:]
+        # Compute the -5 dB drop
+        drop5 = self.dBdata[type][self.maxvaluepos[type]] - 5
+        # Find nearest match for -5dB within the stepped data
+        drop5 = self.grabNearestFreq(stepped_array, drop5)
+        # Find where that lines up in the original data
+        match5 = np.where(self.dBdata[type] == drop5)
+        # Do the same for the -25 dB drop
+        drop25 = self.dBdata[type][self.maxvaluepos[type]] - 25
+        drop25 = self.grabNearestFreq(stepped_array, drop25)
+        match25 = np.where(self.dBdata[type] == drop25)
+        # Compute RT20 from the -5 and -25 dB drops, multiply that by three to get RT60.
+        rt20 = (self.audiotime[match5] - self.audiotime[match25])[0]
+        # place indexes and RT60 in list
+        self.rt60_computed.append([match5, match25, abs(rt20*3)])
+
+    # RT60 difference to .5 seconds
+    def calcDiff(self):
+        self.rtDifference = ((self.rt60_computed[0][2] + self.rt60_computed[1][2]+ self.rt60_computed[2][2]) / 3) - 0.5
