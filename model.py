@@ -2,7 +2,6 @@ import numpy as np
 from scipy.io import wavfile
 from pydub import AudioSegment
 import matplotlib.pyplot as plt
-from os import remove
 
 class AudioModel:
     def __init__(self):
