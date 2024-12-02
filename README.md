@@ -3,11 +3,12 @@
 By Christopher Broche, Austin Norman
 
 ## description
-foo (add something here later)
-takes an audio file and converts it to wav.
-can compute wav and mp3 files.
-shows a plot of whatever audio as RT60 value of low, mid, and high frequencies.
 
+Ensure you run pip install -r requirements.txt after cloning/unzipping the directory.
+
+Run the program by executing main.py
+
+Takes an audio file and converts it to wav, can compute wav and mp3 files, shows a plot of whatever audio as RT60 value of low, mid, and high frequencies.
 
 ### load audio file
 loads whatever audio file
