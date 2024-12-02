@@ -125,3 +125,69 @@ class AudioView:
         self.canvas = FigureCanvasTkAgg(self.figures[0], master=self.root)
         self.canvas.draw()
         self.canvas.get_tk_widget().pack(side=tk.TOP)
+
+    def genRT60figure(self, type):
+        # Create the figures to populate
+        self.figures.append(Figure(figsize=(7, 5), dpi=100))
+        figure = self.figures[type + 1].add_subplot(1, 1, 1)
+        title_str = ""
+        # Populate them with their respective data
+        if type == 0:
+            title_str = "Low"
+            figure.plot(self.controller.model.audiotime, self.controller.model.dBdata[type], label="Low", color='red')
+        elif type == 1:
+            title_str = "Mid"
+            figure.plot(self.controller.model.audiotime, self.controller.model.dBdata[type], label="Mid", color='green')
+        elif type == 2:
+            title_str = "High"
+            figure.plot(self.controller.model.audiotime, self.controller.model.dBdata[type], label="High", color='blue')
+
+        # Let axis labels and a title for the figures
+        figure.set_xlabel("Time [s]")
+        figure.set_ylabel("Intensity [dB]")
+        figure.set_title(title_str + " RT60")
+
+        maxdB = self.controller.model.maxvaluepos[type]
+        minus5 = self.controller.model.rt60_computed[type][0]
+        minus25 = self.controller.model.rt60_computed[type][1]
+        figure.plot(self.controller.model.audiotime[maxdB], self.controller.model.dBdata[type][maxdB], 'go')
+        figure.plot(self.controller.model.audiotime[minus5], self.controller.model.dBdata[type][minus5], 'yo')
+        figure.plot(self.controller.model.audiotime[minus25], self.controller.model.dBdata[type][minus25], 'ro')
+
+    def combinedFigure(self):
+        self.figures.append(Figure(figsize=(7, 5), dpi=100))
+        combined_figure = self.figures[-1].add_subplot(1, 1, 1)
+
+        for i in range(1, 4):
+            figure = self.figures[i]
+
+            for ax in figure.get_axes():
+                line = ax.lines[0]
+                combined_figure.plot(line.get_xdata(), line.get_ydata(), label=ax.get_title(), color=line.get_color())
+
+        combined_figure.set_xlabel("Time (in seconds)")
+        combined_figure.set_ylabel("Intensity (in dB)")
+        combined_figure.set_title("Combined RT60")
+        combined_figure.legend()
+
+    def amplitudeVsFreq(self):
+        min_l = min(len(self.controller.model.freqs),len(self.controller.model.data))
+        self.figures.append(Figure(figsize=(7, 5), dpi=100))
+        avfplot = self.figures[-1].add_subplot(111)
+        avfplot.plot(self.controller.model.freqs[:min_l],self.controller.model.data[:min_l])
+        avfplot.set_xlabel("Frequency (in Hz)")
+        avfplot.set_ylabel("Amplitude (in dB)")
+        avfplot.set_title("Amplitude vs Frequency")
+        # max amplitude index
+        max_amp = np.argmax(self.controller.model.data[:min_l])
+        avfplot.plot(self.controller.model.freqs[max_amp], self.controller.model.data[max_amp],'go')
+
+    def clearPrevPlot(self):
+        # Wipe the canvas clean of the previous figure for the nexto ne
+        self.canvas.get_tk_widget().destroy()
+
+    def drawNextCanvas(self, type):
+        self.clearPrevPlot()
+        self.canvas = FigureCanvasTkAgg(self.figures[type], master=self.root)
+        self.canvas.draw()
+        self.canvas.get_tk_widget().pack(side=tk.TOP)
