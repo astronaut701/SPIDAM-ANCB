@@ -19,8 +19,8 @@ shows the plot for mid frequency
 shows the plot for high frequency
 ### combine plots
 shows the combined plots for low, mid, and high frequencies
-### show db point
-
+### amplitude vs frequency
+compares the amplitude versus the frequency
 
 ## undocumented behavior
 any audio file with more than two channels will not work
@@ -28,5 +28,7 @@ any audio file with more than two channels will not work
 ## errors
 won't take any file other than mp3 and wav files
 
+## known issues
+the converted WAV file created from loading an MP3 is left behind and never cleaned up
 
 By Christopher Broche, Austin Norman
