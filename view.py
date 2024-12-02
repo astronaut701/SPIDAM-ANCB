@@ -181,12 +181,12 @@ class AudioView:
         avfplot.set_xlabel("Frequency (in Hz)")
         avfplot.set_ylabel("Amplitude (in dB)")
         avfplot.set_title("Amplitude vs Frequency")
-        # max amplitude index
+        # Get the index of the highest amplitude and plot it
         max_amp = np.argmax(self.controller.model.data[:min_l])
         avfplot.plot(self.controller.model.freqs[max_amp], self.controller.model.data[max_amp],'go')
 
     def clearPrevPlot(self):
-        # Wipe the canvas clean of the previous figure for the nexto ne
+        # Wipe the canvas clean of the previous figure for the next one
         self.canvas.get_tk_widget().destroy()
 
     def drawNextCanvas(self, type):
