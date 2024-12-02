@@ -10,6 +10,8 @@ Run the program by executing main.py
 
 Takes an audio file and converts it to wav, can compute wav and mp3 files, shows a plot of whatever audio as RT60 value of low, mid, and high frequencies.
 
+Below are the options in the program
+
 ### load audio file
 loads whatever audio file
 ### waveform
