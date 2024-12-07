@@ -2,13 +2,13 @@
 
 By Christopher Broche, Austin Norman
 
-## description
+## Description
 
-Ensure you run pip install -r requirements.txt after cloning/unzipping the directory.
+Ensure you install ffmpeg as per your system, and run pip install -r requirements.txt after cloning/unzipping the directory.
 
 Run the program by executing main.py
 
-Takes an audio file and converts it to wav, can compute wav and mp3 files, shows a plot of whatever audio as RT60 value of low, mid, and high frequencies.
+The program takes an audio file (MP3/WAV/M4A) and converts it to wav, can compute wav and mp3 files, shows a plot of whatever audio as RT60 value of low, mid, and high frequencies.
 
 Below are the options in the program
 
@@ -27,11 +27,6 @@ shows the combined plots for low, mid, and high frequencies
 ### amplitude vs frequency
 compares the amplitude versus the frequency
 
-## undocumented behavior
-any audio file with more than two channels will not work
-
-## errors
-won't take any file other than mp3 and wav files
 
 ## known issues
-the converted WAV file created from loading an MP3 is left behind and never cleaned up
+The converted WAV file created from loading an audio file is left behind and never cleaned up
