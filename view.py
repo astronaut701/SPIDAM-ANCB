@@ -14,7 +14,7 @@ class AudioView:
         self.canvas = None
         self.root.withdraw()
         # Create an instance of the button used to load files
-        self.LoadButton = tk.Button(self.root, text="Load Audio File (WAV/MP3)", command=self.controller.load_file)
+        self.LoadButton = tk.Button(self.root, text="Load Audio File (WAV/MP3/M4A)", command=self.controller.load_file)
         # Setup the list for the graphs
         self.figures = []
         # Setup the instance that will later be used to swap RT60 graphs
@@ -34,7 +34,7 @@ class AudioView:
         # Setup the window that will prompt the user to load a WAV/MP3 file
         self.root.deiconify()
         self.root.title("RT60 Analyzer")
-        self.root.geometry("200x50")
+        self.root.geometry("210x50")
         # Stop the program if the window is closed
         self.root.protocol("WM_DELETE_WINDOW", self.exitRun)
         # Create the button used to load files as was setup in the controller (see __init__)
@@ -56,11 +56,15 @@ class AudioView:
                 icon=icon,
             )
             return r
-            
+
     def createButtons(self):
         # When called, create the extra buttons used for interaction with the graphs
         btn_Frame = tk.Frame(self.root)
         btn_Frame.pack(side=tk.TOP, pady=20)
+
+        # Restart button
+        waveformButton = tk.Button(self.root, text="Start over", command=self.controller.Restart)
+        waveformButton.pack(side=tk.BOTTOM)
 
         # Waveform button
         waveformButton = tk.Button(self.root, text="Waveform", command=self.controller.Waveform)
@@ -98,27 +102,17 @@ class AudioView:
     def displayWaveform(self, model):
         # Get rid of the load button
         self.LoadButton.destroy()
-        # Call the new buttons in if there's a single channel
-        if self.controller.model.numChannels == 1:
-            self.createButtons()
-            # Set a new GUI size
-            self.root.geometry("500x520")
-        # Otherwise skip the buttons
-        else:
-            self.root.geometry("500x500")
-
+        # Call the new buttons in
+        self.createButtons()
+        # Set a new GUI size
+        self.root.geometry("500x550")
         # Add the waveform to the list of figures
         self.figures.append(Figure(figsize=(7, 5), dpi=100))
-        # Prepare for the plots
+        # Prepare the plots
         time = np.linspace(0., model.data.shape[0] / model.samplerate, model.data.shape[0])
         figure = self.figures[0].add_subplot(1, 1, 1)
-
-        #TODO -> Account for surround sound
-        if model.numChannels == 2:
-            figure.plot(time, model.data[:, 0], label="Left")
-            figure.plot(time, model.data[:, 1], label="Right")
-        else:
-            figure.plot(time, model.data, label="Audio")
+        #Audio waveform
+        figure.plot(time, model.data, label="Audio")
         figure.legend()
         figure.set_xlabel("Time (in seconds)")
         figure.set_ylabel("Amplitude (in decibals")

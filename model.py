@@ -26,29 +26,34 @@ class AudioModel:
     # The function imports the audio file and converts it to WAV
     def audioToWav(self, path):
         audio = AudioSegment.from_file(path)
+        audio = audio.set_channels(1)
         audio.export("tempconvert.wav", format="wav", tags={})
         self.num_channels()
 
     def readWav(self):
         self.samplerate, self.data = wavfile.read("tempconvert.wav")
-        if self.numChannels == 1:
-            self.spectrum, self.freqs, self.audiotime, self.im = plt.specgram(self.data, Fs=self.samplerate, NFFT=1024, cmap=plt.get_cmap('autumn_r'))
-            self.frequency_target(300)
-            self.rt60compute(0)
-            self.frequency_target(1000)
-            self.rt60compute(1)
-            self.frequency_target(3000)
-            self.rt60compute(2)
-            self.calcDiff()
+        self.spectrum, self.freqs, self.audiotime, self.im = plt.specgram(self.data, Fs=self.samplerate, NFFT=1024, cmap=plt.get_cmap('autumn_r'))
+        self.frequency_target(300)
+        self.rt60compute(0)
+        self.frequency_target(1000)
+        self.rt60compute(1)
+        self.frequency_target(3000)
+        self.rt60compute(2)
+        self.calcDiff()
 
     def placeConvert(self, path):
-        sound = AudioSegment.from_file(path)
-        sound.export("tempconvert.wav", format="wav", tags={})
+        audio = AudioSegment.from_file(path)
+        audio = audio.set_channels(1)
+        audio.export("tempconvert.wav", format="wav", tags={})
         self.num_channels()
 
+    def org_num_channels(self, path):
+        audio = AudioSegment.from_file(path)
+        self.numChannels = audio.channels
+
     def num_channels(self):
-        sound = AudioSegment.from_file("tempconvert.wav")
-        self.numChannels = sound.channels
+        audio = AudioSegment.from_file("tempconvert.wav")
+        self.numChannels = audio.channels
 
     def findAFrequency(self, target):
         for frequency in self.freqs:
@@ -72,7 +77,7 @@ class AudioModel:
         target = np.asarray(target)
         index = (np.abs(target-nearest)).argmin()
         return target[index]
-        
+
     def rt60compute(self, type):
         # Get the index of max dB value
         self.maxvaluepos.append(np.argmax(self.dBdata[type]))
